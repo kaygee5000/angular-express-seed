@@ -2,65 +2,31 @@
 /**
  * Module dependencies
  */
+var express = require('express');
+var app = express();
+var path = require('path');
 
-var express = require('express'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'),
-  errorHandler = require('error-handler'),
-  morgan = require('morgan'),
-  routes = require('./routes'),
-  api = require('./routes/api'),
-  http = require('http'),
-  path = require('path');
+app.use('/static', express.static(path.join(__dirname + '/front')));
 
-var app = module.exports = express();
-
-
-/**
- * Configuration
- */
-
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(morgan('dev'));
-app.use(bodyParser());
-app.use(methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
-
-var env = process.env.NODE_ENV || 'development';
-
-// development only
-if (env === 'development') {
-  app.use(express.errorHandler());
-}
-
-// production only
-if (env === 'production') {
-  // TODO
-}
-
-
-/**
- * Routes
- */
-
-// serve index and view partials
-app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// JSON API
-app.get('/api/name', api.name);
-
-// redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
-
-
-/**
- * Start Server
- */
-
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/front/web.html'));
 });
+
+app.get('/gallery', function(req, res) {
+  res.sendFile(path.join(__dirname + '/front/gallery.html'));
+});
+
+app.get('/testimonials', function(req, res) {
+  res.sendFile(path.join(__dirname + '/front/testimonials.html'));
+});
+
+app.get('/trends', function(req, res) {
+  res.sendFile(path.join(__dirname + '/front/trends.html'));
+});
+
+app.get('/privacy', function(req, res) {
+  res.sendFile(path.join(__dirname + '/front/privacy.html'));
+});
+
+// viewed at http://localhost:8080
+app.listen(8080);
