@@ -29,4 +29,4 @@ app.get('/privacy', function(req, res) {
 });
 
 // viewed at http://localhost:8080
-app.listen(8080);
+app.listen(process.env.PORT || 8080);
