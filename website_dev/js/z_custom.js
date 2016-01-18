@@ -1,18 +1,53 @@
 /* smooth scroll */
-    $(function() {
-        $('a[href*=#]:not([href=#])').click(function() {
-            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
-                var target = $(this.hash);
-                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-                if (target.length) {
-                    $('html,body').animate({
-                        scrollTop: target.offset().top
-                    }, 1000);
-                    return false;
-                }
+$(function() {
+    $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+                return false;
             }
+        }
+    });
+});
+
+$(function(){
+    //var $grid =  $('.grid').masonry({
+    //    // options
+    //    itemSelector: '.grid-item',
+    //    columnWidth: 200
+    //});
+
+    //// layout Masonry after each image loads
+    //$grid.imagesLoaded().progress( function() {
+    //    $grid.masonry('layout');
+    //});
+
+    //Or, initialize Masonry after all images have been loaded.
+    var $grid = $('.grid').imagesLoaded( function() {
+        // init Masonry after all images have loaded
+        $grid.masonry({
+            // options...
+            itemSelector: '.grid-item',
+            columnWidth: 200
         });
     });
+
+    var index=5, currentOnDisplay=1;
+    var headerDiv = $(".rotateImage");
+    function changeBanner(){
+        var url = 'static/assets/img/bg'+currentOnDisplay+'.jpg';
+        headerDiv.css("background-image", "url(" + url +")");
+        if (currentOnDisplay == index) currentOnDisplay = 0;
+        currentOnDisplay++;
+        console.log(currentOnDisplay, "called");
+    }
+    setInterval(changeBanner, 5000);
+    changeBanner()
+});
 
 /* scrollspy */
 $('body').scrollspy({ target: '#navbar-scroll' });
@@ -24,63 +59,62 @@ $('.navbar-collapse ul li a').click(function() {
 
 /* carousel */
 $(document).ready(function() {
-$("#screenshots").owlCarousel({
-	items: 4,
-	itemsCustom : [
-		[0, 1],
-		[480, 2],
-		[768, 3],
-		[992, 4]
-		],
+    $("#screenshots").owlCarousel({
+        items: 4,
+        itemsCustom : [
+            [0, 1],
+            [480, 2],
+            [768, 3],
+            [992, 4]
+        ],
     });
-$("#owl-testi").owlCarousel
-({
-	navigation : false, // Show next and prev buttons
-	slideSpeed : 300,
-	autoHeight : true,
-	singleItem:true
-});
+    $("#owl-testi").owlCarousel({
+        navigation : true, // Show next and prev buttons
+        slideSpeed : 300,
+        autoHeight : true,
+        singleItem:true
+    });
 });
 
 
 /* sticky navigation */
-  $(document).ready(function(){
+$(document).ready(function(){
     $("#menu").sticky({topSpacing:0});
-  });
+});
 
-jQuery(document).ready(function($) {  
+jQuery(document).ready(function($) {
 
 // site preloader -- also uncomment the div in the header and the css style for #preloader
-$(window).load(function(){
-	$('#preloader').fadeOut('slow',function(){$(this).remove();});
-});
+    $(window).load(function(){
+        $('#preloader').fadeOut('slow',function(){$(this).remove();});
+    });
 
 });
 
 
-	
+
 /* scrollToTop */
 $(document).ready(function(){
-	
-	//Check to see if the window is top if not then display button
-	$(window).scroll(function(){
-		if ($(this).scrollTop() > 500) {
-			$('.scrollToTop').fadeIn();
-		} else {
-			$('.scrollToTop').fadeOut();
-		}
-	});
-	
-	//Click event to scroll to top
-	$('.scrollToTop').click(function(){
-		$('html, body').animate({scrollTop : 0},800);
-		return false;
-	});
-	
+
+    //Check to see if the window is top if not then display button
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 500) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
+        }
+    });
+
+    //Click event to scroll to top
+    $('.scrollToTop').click(function(){
+        $('html, body').animate({scrollTop : 0},800);
+        return false;
+    });
+
 });
-	
+
 /* parallax background image http://www.minimit.com/articles/lets-animate/parallax-backgrounds-with-centered-content	
-/* detect touch */
+ /* detect touch */
 if("ontouchstart" in window){
     document.documentElement.className = document.documentElement.className + " touch";
 }
@@ -90,7 +124,7 @@ if(!$("html").hasClass("touch")){
 }
 
 /* fix vertical when not overflow
-call fullscreenFix() if .fullscreen content changes */
+ call fullscreenFix() if .fullscreen content changes */
 function fullscreenFix(){
     var h = $('body').height();
     // set .fullscreen height

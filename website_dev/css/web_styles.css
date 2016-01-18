@@ -1,0 +1,44 @@
+.grid-item { width: 200px; }
+.grid-item--width2 { width: 400px; }
+
+.testi-item {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    position: relative !important;
+}
+
+.testi-item .message {
+    color: white;
+    font-size: 20px !important;
+    font-weight: bold;
+}
+
+.testi-item .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.51);
+}
+
+.margin_bottom_when_small{
+    margin: 20px 0;
+}
+
+.rotateImage{
+    transition: background 1.5s linear;
+}
+
+@media (min-width: 992px){
+    .col-md-3-5 {
+        width: 28%;
+    }
+    .col-md-2-5 {
+        width: 19.666667%;
+    }
+    .appstorebutton.btn-default{
+        margin: 0 0 0 10px !important;
+    }
+}
