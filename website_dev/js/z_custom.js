@@ -45,7 +45,7 @@ $(function(){
         currentOnDisplay++;
         console.log(currentOnDisplay, "called");
     }
-    setInterval(changeBanner, 5000);
+    setInterval(changeBanner, 10000);
     changeBanner()
 });
 
