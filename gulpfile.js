@@ -101,3 +101,66 @@ gulp.task('watch', function() {
     // Watch any files in dist/, reload on change
     gulp.watch([website_dest]).on('change', livereload.changed);
 });
+
+/**********************DASHBOARD STARTS HERE*************************/
+
+//gulp.task('dash_default', ['dash_clean'], function() {
+//    gulp.start('dash_styles', 'dash_scripts', 'dash_images');
+//});
+
+gulp.task('dash_index', function () {
+    var pagesArray = [
+        {src : 'dashboard_dev/dashboard.html', dest : 'dash.html'}
+    ];
+    pagesArray.forEach(function (page, index) {
+        gulp.src(page.src)
+            .pipe(replace({
+                patterns: [
+                    {
+                        match: 'timestamp',
+                        replacement: new Date().getTime()
+                        //var fs = require('fs');
+                        //replacement: fs.readFileSync('./includes/content.html', 'utf8')
+                    }
+                ]
+            }))
+            .pipe(rename(page.dest))
+            .pipe(gulp.dest(dashboard_dest));
+    });
+
+});
+
+gulp.task('dash_clean', function() {
+    return del([dashboard_dest]);
+});
+
+gulp.task('dash_styles', function() {
+    var styleArray = ['dashboard_dev/css/**/*.css', 'vendor_libraries/**/*.css'];
+    return gulp.src(styleArray)
+        .pipe(concat('dash.css'))
+        .pipe(minifycss({compatibility: 'ie8'}))
+        //.pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest(dashboard_dest))
+        .pipe(notify({ message: 'Styles task complete' }));
+});
+
+gulp.task('dash_scripts', function() {
+    var scriptArray = [
+        'dashboard_dev/vendor_libraries/jquery/**.js',
+        'dashboard_dev/vendor_libraries/!(custom)**/*.js',
+        'dashboard_dev/vendor_libraries/custom/**/*.js'];
+    return gulp.src(scriptArray)
+        .pipe(concat('dash.js'))
+        .pipe(gulp.dest(dashboard_dest))
+        //.pipe(rename({suffix: '.min'}))
+        //.pipe(uglify())
+        //.pipe(gulp.dest(dashboard_dest))
+        .pipe(notify({ message: 'Scripts task complete' }));
+});
+
+gulp.task('dash_images', function() {
+    return gulp.src('dashboard_dev/img/**/*')
+        .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
+        .pipe(gulp.dest(dashboard_dest+'img'))
+        .pipe(notify({ message: 'Images task complete' }));
+});
