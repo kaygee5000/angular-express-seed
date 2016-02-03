@@ -248,7 +248,10 @@ a:hover {
 	padding: 100px 0 70px;
 }
 #intro {
-	padding: 100px 0 70px;
+	padding: 1px 0 70px;
+}
+#pre-intro {
+	padding: 20px 0 20px;
 }
 #intro h2 {
 	font-size: 40px;
@@ -262,7 +265,7 @@ a:hover {
 	padding-top: 20px;
 }
 #feature {
-	padding-top: 100px;
+	padding-top: 10px;
 	background: #f6f6f6;
 }
 #feature h2 {
@@ -386,8 +389,11 @@ a:hover {
 .price-box {
 	border: solid 1px #d1d1d1;
 }
-.package-option {
-	padding: 50px 0 100px;
+.package-option:first-of-type {
+	padding: 50px 0 10px 45px;
+}
+.package-option:nth-of-type(2) {
+	padding: 30px 0 70px 45px;
 }
 .package-option ul {
 	padding: 0;
@@ -595,8 +601,12 @@ a:hover {
 	transition: all .8s ease;
 }
 #footer {
-	background: #fff;
-	padding: 50px 0 50px;
+	color: white !important;
+	background: #c07202;
+	/*padding: 50px 0 50px;*/
+}
+#footer a{
+	color: white !important;
 }
 .social ul {
 	padding: 0;
@@ -864,8 +874,10 @@ and (orientation : landscape) {
 	#package {
 		padding-top: 80px;
 	}
-	.package-option {
-		padding: 50px 0 50px;
+	.package-option:first-of-type {
+		padding: 25px 20px 10px;
+	}.package-option:nth-of-type(2) {
+		padding: 10px 20px 30px;
 	}
 	.price-box {
 		margin-bottom: 30px;

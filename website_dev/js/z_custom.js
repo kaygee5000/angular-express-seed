@@ -43,10 +43,11 @@ $(function(){
         headerDiv.css("background-image", "url(" + url +")");
         if (currentOnDisplay == index) currentOnDisplay = 0;
         currentOnDisplay++;
-        console.log(currentOnDisplay, "called");
     }
     setInterval(changeBanner, 10000);
-    changeBanner()
+    changeBanner();
+
+$('#this_year').text(new Date().getFullYear());
 });
 
 /* scrollspy */

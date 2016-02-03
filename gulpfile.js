@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     pkg = require('./package.json'),
     replace = require('gulp-replace-task'),
+    templateCache = require('gulp-angular-templatecache');
     del = require('del');
 
 var website_dest = 'front/';
@@ -45,7 +46,7 @@ gulp.task('web_clean', function() {
 });
 
 gulp.task('web_styles', function() {
-    var styleArray = ['website_dev/css/bootstrap.css' , 'website_dev/css/**/*.css'];
+    var styleArray = ['website_dev/css/bootstrap.min.css' , 'website_dev/css/**/*.css'];
     return gulp.src(styleArray)
         .pipe(concat('mogo.css'))
         .pipe(minifycss({compatibility: 'ie8'}))
@@ -135,10 +136,14 @@ gulp.task('dash_clean', function() {
 });
 
 gulp.task('dash_styles', function() {
-    var styleArray = ['dashboard_dev/css/**/*.css', 'vendor_libraries/**/*.css'];
+    var styleArray = [
+        'dashboard_dev/css/bootstrap.min.css',
+        'dashboard_dev/css/**/!(custom)*.css',
+        'dashboard_dev/css/custom.css',
+        'dashboard_dev/js/**/*.css'];
     return gulp.src(styleArray)
         .pipe(concat('dash.css'))
-        .pipe(minifycss({compatibility: 'ie8'}))
+        //.pipe(minifycss({compatibility: 'ie8'}))
         //.pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(dashboard_dest))
         .pipe(notify({ message: 'Styles task complete' }));
@@ -146,9 +151,11 @@ gulp.task('dash_styles', function() {
 
 gulp.task('dash_scripts', function() {
     var scriptArray = [
-        'dashboard_dev/vendor_libraries/jquery/**.js',
-        'dashboard_dev/vendor_libraries/!(custom)**/*.js',
-        'dashboard_dev/vendor_libraries/custom/**/*.js'];
+        'dashboard_dev/js/jquery/*.js',
+        'dashboard_dev/js/bootstrap/*.js',
+        'dashboard_dev/js/angular/*.js',
+        'dashboard_dev/js/!(custom)**/*.js',
+        'dashboard_dev/js/custom/**/*.js'];
     return gulp.src(scriptArray)
         .pipe(concat('dash.js'))
         .pipe(gulp.dest(dashboard_dest))
@@ -163,4 +170,27 @@ gulp.task('dash_images', function() {
         .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
         .pipe(gulp.dest(dashboard_dest+'img'))
         .pipe(notify({ message: 'Images task complete' }));
+});
+
+
+gulp.task('dash_move_assets', function(){
+    return gulp.src('dashboard_dev/fonts/**/*')
+        .pipe(gulp.dest(dashboard_dest+'/fonts'))
+});
+
+
+gulp.task('app_source_js', function () {
+    return gulp.src('dashboard_dev/app/**/*.js')
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest(dashboard_dest))
+});
+
+gulp.task('app_source_html', function () {
+    return gulp.src('dashboard_dev/app/**/*.html')
+        .pipe(templateCache('templates.js', {standalone : true}))
+        .pipe(gulp.dest(dashboard_dest));
+});
+
+gulp.task('app', function () {
+    gulp.run('app_source_js', 'app_source_html')
 });
